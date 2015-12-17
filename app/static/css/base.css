@@ -1,0 +1,16 @@
+.wrap {
+width: 100%;
+overflow:auto;
+}
+
+.fleft {
+float:left;
+width:50%;
+height:100%;
+}
+
+.fright {
+float:right;
+width:50%;
+height:100%;
+}

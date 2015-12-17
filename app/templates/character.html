@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="character-page">
+	<h1>{{ character.name.title() }}</h1>
+	<div class="quick">
+		<h2>Quick Tips</h2>
+		<p>{{ character.quick }}</p>
+	</div>
+	<div class="depth">
+		<h2>In-Depth</h2>
+		<p>{{ character.depth }}</p>
+	</div>
+</div>
+{% endblock %}
