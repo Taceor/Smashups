@@ -1,3 +1,4 @@
+/*
 .wrap {
 width: 100%;
 overflow:auto;
@@ -13,4 +14,27 @@ height:100%;
 float:right;
 width:50%;
 height:100%;
+}
+*/
+
+.header {
+position: fixed;
+top: 0px;
+width: 75%;
+height: 50px;
+padding: 5px;
+left: 0;
+right: 0;
+margin: auto;
+border-style: ridge;
+border-width: 5px;
+border-color: black;
+}
+
+.header table {
+margin: 0 auto;
+}
+
+body {
+margin-top: 65px;
 }

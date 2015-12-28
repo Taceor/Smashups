@@ -1,60 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
+
+{% include 'charlist.html' %}
+
 This is the index page.
 
-<table border="1">
-<tr>
-	<td colspan="2"><a href="{{ url_for('character', name='Wario') }}">Wario</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Mario') }}">Mario</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Luigi') }}">Luigi</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Peach') }}">Peach</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Bowser') }}">Bowser</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Yoshi') }}">Yoshi</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Donkey Kong') }}">Donkey Kong</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Diddy Kong') }}">Diddy Kong</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Captain Falcon') }}">Captain Falcon</a></td>
-</tr>
-<tr>
-	<td colspan="2"><a href="{{ url_for('character', name='Wolf') }}">Wolf</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Fox') }}">Fox</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Falco') }}">Falco</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Ice Climbers') }}">Ice Climbers</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Zelda') }}">Zelda</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Sheik') }}">Sheik</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Link') }}">Link</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Toon Link') }}">Toon Link</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Ganondorf') }}">Ganondorf</a></td>
-</tr>
-<tr>
-	<td colspan="2"><a href="{{ url_for('character', name='Mewtwo') }}">Mewtwo</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Lucario') }}">Lucario</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Pikachu') }}">Pikachu</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Jigglypuff') }}">Jigglypuff</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Squirtle') }}">Squirtle</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Ivysaur') }}">Ivysaur</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Charizard') }}">Charizard</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Samus') }}">Samus</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Zero Suit Samus') }}">Zero Suit Samus</a></td>
-</tr>
-<tr>
-	<td colspan="2"><a href="{{ url_for('character', name='Lucas') }}">Lucas</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Ness') }}">Ness</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Pit') }}">Pit</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Kirby') }}">Kirby</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Meta Knight') }}">Meta Knight</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='King Dedede') }}">King Dedede</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Ike') }}">Ike</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Marth') }}">Marth</a></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Roy') }}">Roy</a></td>
-</tr>
-<tr>
-	<td colspan="3"></td>
-	<td colspan="2"><a href="{{ url_for('character', name='Olimar') }}">Olimar</td>
-	<td colspan="2"><a href="{{ url_for('character', name='R.O.B.') }}">R.O.B.</td>
-	<td colspan="2"><a href="{{ url_for('character', name='Mr. Game & Watch') }}">Mr. Game & Watch</td>
-	<td colspan="2"><a href="{{ url_for('character', name='Snake') }}">Snake</td>
-	<td colspan="2"><a href="{{ url_for('character', name='Sonic') }}">Sonic</td>
-	<td colspan="2"><a href="{{ url_for('character', name='Random') }}">Random</td>
-	<td></td>
-</tr>
+Blah
+Blah
+
 {% endblock %}

@@ -1,4 +1,5 @@
 from app import db
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class Character(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -32,7 +33,7 @@ class Pro(db.Model):
 	text = db.Column(db.String(140))
 	smashup_id = db.Column(db.Integer, db.ForeignKey('smashup.id'))
 
-	def __init__(self, text, smashup_id)
+	def __init__(self, text, smashup_id):
 		self.text = test
 		self.smashup_id = smashup_id
 
@@ -44,7 +45,7 @@ class Con(db.Model):
 	text = db.Column(db.String(140))
 	smashup_id = db.Column(db.Integer, db.ForeignKey('smashup.id'))
 
-	def __init__(self, text, smashup_id)
+	def __init__(self, text, smashup_id):
 		self.text = test
 		self.smashup_id = smashup_id
 
@@ -56,7 +57,7 @@ class Neutral(db.Model):
 	text = db.Column(db.String(1000))
 	smashup_id = db.Column(db.Integer, db.ForeignKey('smashup.id'))
 
-	def __init__(self, text, smashup_id)
+	def __init__(self, text, smashup_id):
 		self.text = test
 		self.smashup_id = smashup_id
 
@@ -70,23 +71,57 @@ class Neutral(db.Model):
 	user = relationship
 """
 
-"""Class User
-	id
-	name
-	email
-	hashword <-- figure out how to do safely
-	is_admin
+class User(db.Model):
+	id = db.Column(db.Integer, primary_key = True)
+	nickname = db.Column(db.String(42))
+	email = db.Column(db.String(255))
+	password = db.Column(db.String(255))
+	pw_hash = db.Column(db.String(255))
+	about = db.Column(db.Text())
+	main = db.Column(db.String(42))
+	
+	def __init__(self, nickname, email, password):
+		self.nickname = nickname
+		self.email = email
+		self.set_password(password)
+
+	def set_password(self, password):
+		self.pw_hash = generate_password_hash(password)
+
+	def check_password(self, password):
+		return check_password_hash(self.pw_hash, password)
+
+	@property
+	def is_authenticated(self):
+		return True
+
+	@property
+	def is_active(self):
+		return True
+
+	@property
+	def is_anonymous(self):
+		return False
+
+	def get_id(self):
+		return unicode(self.id)
+
+	def __repr__(self):
+		return '<User %r>' % (self.nickname)
+
+	"""
 	comments = relationship
 	messages_in = relationship
 	messages_out = relationship
 	suggestions = relationship
-"""
+	"""
 
 """Class Comment
 	id
 	text
 	user = relationship
 	parent <-- figure out some shiz
+	topic
 	time
 """
 

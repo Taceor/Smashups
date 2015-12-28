@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>New User</h1>
+    <form action="" method="post" name="login">
+        {{ form.hidden_tag() }}
+        <p>
+            Please enter your nickname:<br>
+            {{ form.nickname(size=80) }}
+        </p>
+        <p>
+            Please enter your email:<br>
+            {{ form.email(size=80) }}
+        </p>
+        <p>
+            Please enter your password:<br>
+            {{ form.password(size=8) }}
+        </p>
+        <p>
+            Do it again:<br>
+            {{ form.confirm(size=8) }}
+        </p>
+        <!--<p>{{ form.remember_me }} Remember Me</p>-->
+        <p><input type="submit" value="Sign In"></p>
+    </form>
+{% endblock %}
