@@ -1,0 +1,20 @@
+Set up Suggestion form
+	- Takes Character
+	- Smashup, if any
+	- Section (Pro, Con, Neut | Quick or Depth)
+	- Records username
+
+Set links on Char and Smashup pages for Suggestions
+	- A little symbol next to Char name and each section header
+		- Auto fill form for Char, Smashup, and Section
+
+Smashup Pages
+
+Comments
+	http://stackoverflow.com/questions/6985404/how-to-do-nested-comments-in-flask-jinja
+
+Search?
+
+Icons
+
+Review

@@ -1,7 +1,7 @@
 import random
 from app import app, db, models, lm
-from app.models import Character, Smashup, Pro, Con, Neutral, User
-from app.forms import LoginForm, NewUser, EditUser
+from app.models import Character, Smashup, Pro, Con, Neutral, User, Suggestion, Quick, Depth
+from app.forms import LoginForm, NewUser, EditUser, SuggestionForm
 from flask import render_template, flash, redirect, session, url_for, request, g
 from flask.ext.login import login_required, login_user, logout_user, current_user
 from config import SECRET_KEY
@@ -78,9 +78,46 @@ def newuser():
 		db.session.commit()
 		login_user(user)
 		flash('Logged in')
-		flash(user.pw_hash)
 		return redirect(url_for('index'))
 	return render_template('newuser.html', form=form)
+
+@app.route('/suggestion', methods=['GET', 'POST'])
+def seggestion():
+	form = SuggestionForm()
+	if form.validate_on_submit():
+		char = Character.query.filter_by(name=form.character.data).first()
+		if form.opponent.data == 'none':
+			if form.section.data == 'quick':
+				quick = Quick(form.text.data, char.id)
+				db.session.add(quick)
+				db.session.commit()
+			elif form.section.data == 'depth':
+				depth = Depth(form.text.data, char.id)
+				db.session.add(depth)
+				db.session.commit()
+			else:
+				flash('Invalid input detected, pleb!')
+				return redirect(url_for('suggestion'))
+		else:
+			oppo = Character.query.filter_by(name=form.opponent.data).first()
+			smashup = Smashup.query.filter_by(char=char.name, oppo=oppo.name).first()
+			if form.section.data == 'pro':
+				pro = Pro(form.text.data, smashup.id)
+				db.session.add(pro)
+				db.session.commit()
+			elif form.section.data == 'con':
+				con = Con(form.text.data, smashup.id)
+				db.session.add(con)
+				db.session.commit()
+			elif form.section.data == 'neutral':
+				neut = Neut(form.text.data, smashup.id)
+				db.session.add(neut)
+				db.session.commit()
+			else:
+				flash('Invalid input detected, pleb!')
+				return redirect(url_for('suggestion'))
+		return redirect(url_for('character', name=char.name))
+	return render_template('suggestion.html', form=form)
 
 @app.route('/user/<nickname>')
 @login_required
