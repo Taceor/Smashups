@@ -115,7 +115,7 @@ def suggestion():
 				db.session.add(con)
 				db.session.commit()
 			elif form.section.data == 'neutral':
-				neut = Neut(form.text.data, smashup.id)
+				neut = Neutral(form.text.data, smashup.id)
 				db.session.add(neut)
 				db.session.commit()
 			else:
