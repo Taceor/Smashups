@@ -2,8 +2,11 @@
 {% block content %}
 <div class="container">
 <div class="row">
-	<div class="col-sm-6">
-		<h1>{{ left.char.title() }}</h1>
+	<div class="col-sm-2">
+	{% include "smashuplistleft.html" %}
+	</div>
+	<div class="col-sm-4">
+		<h1><a href="{{ url_for('character', name=left.char) }}">{{ left.char.title() }}</a></h1>
 		<div class="pros">
 			<h2>Pros:</h2>
 			<ul>
@@ -29,8 +32,8 @@
 			</ul>
 		</div>
 	</div>
-	<div class="col-sm-6">
-		<h1>{{ right.char.title() }}</h1>
+	<div class="col-sm-4">
+		<h1><a href="{{url_for('character', name=right.char) }}">{{ right.char.title() }}</a></h1>
 		<div class="pros">
 			<h2>Pros:</h2>
 			<ul>
@@ -56,7 +59,9 @@
 			</ul>
 		</div>
 	</div>
+	<div class="col-sm-2">
+	{% include "smashuplistright.html" %}
+	</div>
 </div>
 </div>
-{% include 'smashuplistrec.html' %}
 {% endblock %}
