@@ -12,9 +12,11 @@
 	<link rel="stylesheet" type="text/css" href={{ url_for('static', filename='css/base.css') }}>
 </head>
 <body>
+	<div class="container">
 	<div class="header col-md-12">
 		<p>Smashups! 
 		| <a href="{{ url_for('index') }}"> HOME </a>
+		| <a href="{{ url_for('suggestion') }}"> SUGGEST </a>
 		{% if g.user.is_authenticated %}
 		| <a href="{{ url_for('user', nickname=g.user.nickname) }}"> PROFILE </a>
 		| <a href="{{ url_for('settings') }}"> EDIT </a>
@@ -25,10 +27,11 @@
 		{% endif %}
 		</p>
 	</div>
-	<div class="content col-md-12">
+	</div>
+	<div class="content">
 	{% with messages = get_flashed_messages() %}
 		{% if messages %}
-			<div class="flash-message col-md-4">
+			<div class="flash-message col-md-4 col-md-offset-4">
 			<p> Look! </p>
 			{% for message in messages %}
 				<p>{{ message }}</p>
@@ -38,7 +41,6 @@
 	{% endwith %}
 	{% block content %}{% endblock %}
 	</div>
-</div>
 	<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
 	<script src="static/js/bootstrap.min.js"></script>
 </body>

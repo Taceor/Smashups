@@ -22,9 +22,12 @@ def character(name=None):
 	character = Character.query.filter_by(name=name.lower()).first()
 	return render_template('character.html', character=character)
 
-@app.route('/smashup')
-def smashup():
-	return render_template('smashup.html')
+@app.route('/smashup/<char>/<oppo>')
+def smashup(char=None, oppo=None):
+	left = Smashup.query.filter_by(char=char.lower(), oppo=oppo.lower()).first()
+	right = Smashup.query.filter_by(char=oppo.lower(), oppo=char.lower()).first()
+
+	return render_template('smashup.html', left=left, right=right)
 
 @lm.user_loader
 def load_user(id):
@@ -82,7 +85,7 @@ def newuser():
 	return render_template('newuser.html', form=form)
 
 @app.route('/suggestion', methods=['GET', 'POST'])
-def seggestion():
+def suggestion():
 	form = SuggestionForm()
 	if form.validate_on_submit():
 		char = Character.query.filter_by(name=form.character.data).first()

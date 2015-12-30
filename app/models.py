@@ -15,8 +15,8 @@ class Character(db.Model):
 
 class Smashup(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	char = db.Column(db.String(25), db.ForeignKey('character.name'))
-	oppo = db.Column(db.String(25), db.ForeignKey('character.name'))
+	char = db.Column(db.String(25))
+	oppo = db.Column(db.String(25)) 
 	pros = db.relationship('Pro', backref='smashup', lazy='dynamic')
 	cons = db.relationship('Con', backref='smashup', lazy='dynamic')
 	neut = db.relationship('Neutral', backref='smashup', lazy='dynamic')
@@ -30,7 +30,7 @@ class Smashup(db.Model):
 
 class Quick(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	text = db.Column(db.String(140))
+	text = db.Column(db.String(255))
 	char_id = db.Column(db.Integer, db.ForeignKey('character.id'))
 
 	def __init__(self, text, char_id):
@@ -42,7 +42,7 @@ class Quick(db.Model):
 
 class Depth(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	text = db.Column(db.String(140))
+	text = db.Column(db.String(1500))
 	char_id = db.Column(db.Integer, db.ForeignKey('character.id'))
 
 	def __init__(self, text, char_id):
@@ -54,7 +54,7 @@ class Depth(db.Model):
 
 class Pro(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	text = db.Column(db.String(140))
+	text = db.Column(db.String(255))
 	smashup_id = db.Column(db.Integer, db.ForeignKey('smashup.id'))
 
 	def __init__(self, text, smashup_id):
@@ -66,7 +66,7 @@ class Pro(db.Model):
 
 class Con(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	text = db.Column(db.String(140))
+	text = db.Column(db.String(255))
 	smashup_id = db.Column(db.Integer, db.ForeignKey('smashup.id'))
 
 	def __init__(self, text, smashup_id):
@@ -78,7 +78,7 @@ class Con(db.Model):
 
 class Neutral(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	text = db.Column(db.String(1000))
+	text = db.Column(db.String(1500))
 	smashup_id = db.Column(db.Integer, db.ForeignKey('smashup.id'))
 
 	def __init__(self, text, smashup_id):
@@ -112,7 +112,7 @@ class User(db.Model):
 	password = db.Column(db.String(255))
 	pw_hash = db.Column(db.String(255))
 	about = db.Column(db.Text())
-	main = db.Column(db.String(42))
+	main = db.Column(db.String(25))
 	suggestions = db.relationship('Suggestion', backref='user', lazy='dynamic')
 	
 	def __init__(self, nickname, email, password):
