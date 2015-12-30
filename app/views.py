@@ -25,7 +25,7 @@ def character(name=None):
 @app.route('/smashup/<char>/<oppo>')
 def smashup(char=None, oppo=None):
 	if char == 'Random':
-		char = Character.query.filter_by(id=random.randint(1.41)).first().name
+		char = Character.query.filter_by(id=random.randint(1,41)).first().name
 	if oppo == 'Random':
 		oppo = Character.query.filter_by(id=random.randint(1,41)).first().name
 	left = Smashup.query.filter_by(char=char.lower(), oppo=oppo.lower()).first()
