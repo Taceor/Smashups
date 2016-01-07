@@ -8,14 +8,18 @@
 	{% else %}
 	<title>Smashups</title>
 	{% endif %}
-	<link rel="stylesheet" type="text/css" href={{ url_for('static', filename='css/bootstrap.min.css') }}>
-	<link rel="stylesheet" type="text/css" href={{ url_for('static', filename='css/base.css') }}>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
+	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 </head>
 <body>
-	<div class="container">
-	<div class="header col-sm-8 col-sm-offset-2">
+	<div class="container-fluid">
+	<div class="header col-sm-8">
 		<p>Smashups! 
 		| <a href="{{ url_for('index') }}"> HOME </a>
+		| <a href="{{ url_for('smashup', char='random', oppo='random') }}"> SMASHUP </a>
+		| <a href="{{ url_for('character', name='random') }}"> CHARACTER </a>
 		| <a href="{{ url_for('suggestion') }}"> SUGGEST </a>
 		{% if g.user.is_authenticated %}
 		| <a href="{{ url_for('user', nickname=g.user.nickname) }}"> PROFILE </a>
@@ -41,7 +45,5 @@
 	{% endwith %}
 	{% block content %}{% endblock %}
 	</div>
-	<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
-	<script src="static/js/bootstrap.min.js"></script>
 </body>
 </html>

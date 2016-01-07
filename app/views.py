@@ -17,16 +17,16 @@ def index():
 
 @app.route('/character/<name>')
 def character(name=None):
-	if name == 'Random':
+	if name == 'Random' or name == 'random':
 		name = Character.query.filter_by(id=random.randint(1,41)).first().name
 	character = Character.query.filter_by(name=name.lower()).first()
 	return render_template('character.html', character=character)
 
 @app.route('/smashup/<char>/<oppo>')
 def smashup(char=None, oppo=None):
-	if char == 'Random':
+	if char == 'Random' or char == 'random':
 		char = Character.query.filter_by(id=random.randint(1,41)).first().name
-	if oppo == 'Random':
+	if oppo == 'Random' or oppo == 'random':
 		oppo = Character.query.filter_by(id=random.randint(1,41)).first().name
 	left = Smashup.query.filter_by(char=char.lower(), oppo=oppo.lower()).first()
 	right = Smashup.query.filter_by(char=oppo.lower(), oppo=char.lower()).first()
