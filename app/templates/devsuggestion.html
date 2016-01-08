@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<h1>New Suggestion</h1>
+	<form action="" method="post" name="suggestion">
+		{{ form.hidden_tag() }}
+		<p>
+			Text:<br>
+			{{ form.text() }}
+		</p>
+		<p><input type="submit" value="Suggest!"></p>
+	</form>
+{% endblock %}

@@ -37,9 +37,9 @@
         <li class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">Suggest <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#">Character Tip</a></li>
-            <li><a href="#">Smashup Tip</a></li>
-            <li><a href="#">Developer Tip</a></li>
+            <li><a href="{{ url_for('suggestion', subject='character') }}">Character Tip</a></li>
+            <li><a href="{{ url_for('suggestion', subject='smashup') }}">Smashup Tip</a></li>
+            <li><a href="{{ url_for('suggestion', subject='developer') }}">Developer Tip</a></li>
           </ul>
         </li>
       </ul>

@@ -18,8 +18,16 @@ class EditUser(Form):
 	about = TextField('About You', [validators.DataRequired()])
 	main = SelectField('Select Main', choices=[('yoshi', 'Yoshi'), ('not', 'Not')])
 
-class SuggestionForm(Form):
+class CharSuggestionForm(Form):
+	character = SelectField('Select Character', choices=characters)
+	section = SelectField('Select Section', choices=[('quick', 'Quick Tip'), ('depth', 'In-Depth')])
+	text = TextField('Suggestion')
+
+class SmashSuggestionForm(Form):
 	character = SelectField('Select Character', choices=characters)
 	opponent = SelectField('Select Opponent', choices=characters)
-	section = SelectField('Select Section', choices=[('pro', 'Pro'), ('con', 'Con'), ('neutral', 'Neutral'), ('quick', 'Quick Tip'), ('depth', 'In-Depth')])
+	section = SelectField('Select Section', choices=[('pro', 'Pro'), ('con', 'Con'), ('neutral', 'Neutral')])
+	text = TextField('Suggestion')
+
+class DevSuggestionForm(Form):
 	text = TextField('Suggestion')

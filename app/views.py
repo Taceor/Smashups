@@ -1,7 +1,7 @@
 import random
 from app import app, db, models, lm
 from app.models import Character, Smashup, Pro, Con, Neutral, User, Suggestion, Quick, Depth
-from app.forms import LoginForm, NewUser, EditUser, SuggestionForm
+from app.forms import LoginForm, NewUser, EditUser, SmashSuggestionForm, CharSuggestionForm, DevSuggestionForm
 from flask import render_template, flash, redirect, session, url_for, request, g
 from flask.ext.login import login_required, login_user, logout_user, current_user
 from config import SECRET_KEY
@@ -88,43 +88,63 @@ def newuser():
 		return redirect(url_for('index'))
 	return render_template('newuser.html', form=form)
 
-@app.route('/suggestion', methods=['GET', 'POST'])
-def suggestion():
-	form = SuggestionForm()
-	if form.validate_on_submit():
-		char = Character.query.filter_by(name=form.character.data).first()
-		if form.opponent.data == 'none':
-			if form.section.data == 'quick':
-				quick = Quick(form.text.data, char.id)
-				db.session.add(quick)
-				db.session.commit()
-			elif form.section.data == 'depth':
-				depth = Depth(form.text.data, char.id)
-				db.session.add(depth)
-				db.session.commit()
-			else:
-				flash('Invalid input detected, pleb!')
-				return redirect(url_for('suggestion'))
-		else:
+@app.route('/suggestion/<subject>', methods=['GET', 'POST'])
+def suggestion(subject=None):
+	if subject == 'smashup':
+		form = SmashSuggestionForm()
+		if form.validate_on_submit():
+			char = Character.query.filter_by(name=form.character.data).first()
 			oppo = Character.query.filter_by(name=form.opponent.data).first()
 			smashup = Smashup.query.filter_by(char=char.name, oppo=oppo.name).first()
 			if form.section.data == 'pro':
 				pro = Pro(form.text.data, smashup.id)
 				db.session.add(pro)
 				db.session.commit()
+				return redirect(url_for('smashup', char=char.name, oppo=oppo.name))
 			elif form.section.data == 'con':
 				con = Con(form.text.data, smashup.id)
 				db.session.add(con)
 				db.session.commit()
+				return redirect(url_for('smashup', char=char.name, oppo=oppo.name))
 			elif form.section.data == 'neutral':
 				neut = Neutral(form.text.data, smashup.id)
 				db.session.add(neut)
 				db.session.commit()
+				return redirect(url_for('smashup', char=char.name, oppo=oppo.name))
 			else:
 				flash('Invalid input detected, pleb!')
-				return redirect(url_for('suggestion'))
-		return redirect(url_for('character', name=char.name))
-	return render_template('suggestion.html', form=form)
+				return redirect(url_for('index'))
+		return render_template('smashsuggestion.html', form=form)
+	elif subject == 'character':
+		form = CharSuggestionForm()
+		if form.validate_on_submit():
+			char = Character.query.filter_by(name=form.character.data).first()
+			if form.section.data == 'quick':
+				quick = Quick(form.text.data, char.id)
+				db.session.add(quick)
+				db.session.commit()
+				return redirect(url_for('character', name=char.name))
+			elif form.section.data == 'depth':
+				depth = Depth(form.text.data, char.id)
+				db.session.add(depth)
+				db.session.commit()
+				return redirect(url_for('character', name=char.name))
+			else:
+				flash('Invalid input detected, pleb!')
+				return redirect(url_for('index'))
+		return render_template('charsuggestion.html', form=form)
+	elif subject == 'developer':
+		form = DevSuggestionForm()
+		if form.validate_on_submit():
+			devtip = Devtip(form.text.data, g.user)
+			db.session.add(devtip)
+			db.session.commit()
+			flash('Thanks for your input!')
+			return redirect(url_for('index'))
+		return render_template('devsuggestion.html', form=form)
+	else:
+		flash ('Error, no such page')
+		return redirect(url_for('index'))
 
 @app.route('/user/<nickname>')
 @login_required

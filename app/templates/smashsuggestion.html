@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<h1>New Suggestion</h1>
+	<form action="" method="post" name="suggestion">
+		{{ form.hidden_tag() }}
+		<p>
+			Character: {{ form.character() }}
+		</p>
+		<p>
+			Opponent:<br>
+			{{ form.opponent() }}
+		</p>
+		<p>
+			Section:<br>
+			{{ form.section() }}
+		</p>
+		<p>
+			Text:<br>
+			{{ form.text() }}
+		</p>
+		<p><input type="submit" value="Suggest!"></p>
+	</form>
+{% endblock %}
