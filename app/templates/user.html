@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>User: {{ user.nickname }}</h1>
-<p>About: {{ user.about }}</p>
-<p>Main: {{ user.main }}</p>
+<div class="container">
+<div class="col-sm-12">
+	<h1>{{ user.nickname }}</h1>
+	<p>Main: {{ user.main.title() }}</p>
+	<p>About: {{ user.about }}</p>
+</div>
+</div>
 {% endblock %}

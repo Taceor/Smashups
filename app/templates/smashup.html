@@ -7,7 +7,7 @@
 			<h2>Pros:</h2>
 			<ul>
 			{% for pro in left.pros %}
-				<li>{{ pro.text }}</li>
+				<li><b>{{ pro.score }} |</b> {{ pro.text }}</li>
 			{% endfor %}
 			</ul>
 		</div>
@@ -15,7 +15,7 @@
 			<h2>Cons:</h2>
 			<ul>
 			{% for con in left.cons %}
-				<li>{{ con.text }}</li>
+				<li><b>{{ con.score }} |</b> {{ con.text }}</li>
 			{% endfor %}
 			</ul>
 		</div>
@@ -23,7 +23,7 @@
 			<h2>Neutral:</h2>
 			<ul>
 			{% for neut in left.neuts %}
-				<li>{{ neut.text }}</li>
+				<li><b>{{ neut.score }} |</b> {{ neut.text }}</li>
 			{% endfor %}
 			</ul>
 		</div>
@@ -35,7 +35,7 @@
 			<h2>Pros:</h2>
 			<ul>
 			{% for pro in right.pros %}
-				<li>{{ pro.text }}</li>
+				<li><b>{{ pro.score }} |</b> {{ pro.text }}</li>
 			{% endfor %}
 			</ul>
 		</div>
@@ -43,7 +43,7 @@
 			<h2>Cons:</h2>
 			<ul>
 			{% for con in right.cons %}
-				<li>{{ con.text }}</li>
+				<li><b>{{ con.score }} |</b> {{ con.text }}</li>
 			{% endfor %}
 			</ul>
 		</div>
@@ -51,7 +51,7 @@
 			<h2>Neutral:</h2>
 			<ul>
 			{% for neut in right.neuts %}
-				<li>{{ neut.text }}</li>
+				<li><b>{{ neut.score }} |</b> {{ neut.text }}</li>
 			{% endfor %}
 			</ul>
 		</div>
