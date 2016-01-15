@@ -50,7 +50,7 @@ def smashup(char=None, oppo=None):
 	if oppo == 'Random' or oppo == 'random':
 		oppo = Character.query.filter_by(id=random.randint(1,41)).first().name
 	left = Smashup.query.filter_by(char=char.lower(), oppo=oppo.lower()).first()
-	l_pros = left.suggs.filter_by(section='pro').order_by(score.desc()).all()
+	l_pros = left.suggs.filter_by(section='pro').all()
 	l_cons = left.suggs.filter_by(section='con').all()
 	l_neuts = left.suggs.filter_by(section='neutral').all()
 	right = Smashup.query.filter_by(char=oppo.lower(), oppo=char.lower()).first()
