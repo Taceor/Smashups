@@ -6,24 +6,24 @@
 		<div class="pros">
 			<h2>Pros:</h2>
 			<ul>
-			{% for pro in left.pros %}
-				<li><b>{{ pro.score }} |</b> {{ pro.text }}</li>
+			{% for sugg in l_pros %}
+				<li>{% include "suggestion.html" %}</li>
 			{% endfor %}
 			</ul>
 		</div>
 		<div class="cons">
 			<h2>Cons:</h2>
 			<ul>
-			{% for con in left.cons %}
-				<li><b>{{ con.score }} |</b> {{ con.text }}</li>
+			{% for sugg in l_cons %}
+				{% include "suggestion.html" %}
 			{% endfor %}
 			</ul>
 		</div>
 		<div class="neut">
 			<h2>Neutral:</h2>
 			<ul>
-			{% for neut in left.neuts %}
-				<li><b>{{ neut.score }} |</b> {{ neut.text }}</li>
+			{% for sugg in l_neuts %}
+				{% include "suggestion.html" %}
 			{% endfor %}
 			</ul>
 		</div>
@@ -34,24 +34,24 @@
 		<div class="pros">
 			<h2>Pros:</h2>
 			<ul>
-			{% for pro in right.pros %}
-				<li><b>{{ pro.score }} |</b> {{ pro.text }}</li>
+			{% for sugg in r_pros %}
+				{% include "suggestion.html" %}
 			{% endfor %}
 			</ul>
 		</div>
 		<div class="cons">
 			<h2>Cons:</h2>
 			<ul>
-			{% for con in right.cons %}
-				<li><b>{{ con.score }} |</b> {{ con.text }}</li>
+			{% for sugg in r_cons %}
+				{% include "suggestion.html" %}
 			{% endfor %}
 			</ul>
 		</div>
 		<div class="neut">
 			<h2>Neutral:</h2>
 			<ul>
-			{% for neut in right.neuts %}
-				<li><b>{{ neut.score }} |</b> {{ neut.text }}</li>
+			{% for sugg in r_neuts %}
+				{% include "suggestion.html" %}
 			{% endfor %}
 			</ul>
 		</div>

@@ -1,8 +1,10 @@
+from __future__ import print_function
+import sys
 import random
 from app import app, db, models, lm
-from app.models import Character, Smashup, Pro, Con, Neutral, User, Suggestion, Quick, Depth, DevTip
+from app.models import Character, Smashup, User, Suggestion, DevTip
 from app.forms import LoginForm, NewUser, EditUser, SmashSuggestionForm, CharSuggestionForm, DevSuggestionForm
-from flask import render_template, flash, redirect, session, url_for, request, g
+from flask import render_template, flash, redirect, session, url_for, request, g, jsonify
 from flask.ext.login import login_required, login_user, logout_user, current_user
 from config import SECRET_KEY
 
@@ -11,6 +13,21 @@ chars = ["Bowser", "Captain Falcon", "Charizard", "Diddy Kong", "Donkey Kong", "
 @app.before_request
 def before_request():
 	g.user = current_user
+
+@app.route('/_upvote')
+def upvote():
+	user_nickname = request.args.get('user_nickname', 0)
+	user = User.query.filter_by(nickname=user_nickname).first()
+	sugg_id = request.args.get('sugg_id', 0, type=int)
+	sugg = Suggestion.query.filter_by(id=sugg_id).first()
+	sugg.score += 1
+	sugg.voters.append(user)
+	user.votes.append(sugg)
+	db.session.add(sugg)
+	db.session.add(user)
+	db.session.commit()
+	return jsonify(result="test")
+
 
 @app.route("/")
 @app.route("/index")
@@ -22,7 +39,9 @@ def character(name=None):
 	if name == 'Random' or name == 'random':
 		name = Character.query.filter_by(id=random.randint(1,41)).first().name
 	character = Character.query.filter_by(name=name.lower()).first()
-	return render_template('character.html', character=character)
+	quicks = character.suggs.filter_by(section='quick').join(Character.suggs).order_by(Suggestion.score).all()
+	depths = character.suggs.filter_by(section='depth').all()
+	return render_template('character.html', character=character, quicks=quicks, depths=depths)
 
 @app.route('/smashup/<char>/<oppo>')
 def smashup(char=None, oppo=None):
@@ -31,9 +50,15 @@ def smashup(char=None, oppo=None):
 	if oppo == 'Random' or oppo == 'random':
 		oppo = Character.query.filter_by(id=random.randint(1,41)).first().name
 	left = Smashup.query.filter_by(char=char.lower(), oppo=oppo.lower()).first()
+	l_pros = left.suggs.filter_by(section='pro').order_by(score.desc()).all()
+	l_cons = left.suggs.filter_by(section='con').all()
+	l_neuts = left.suggs.filter_by(section='neutral').all()
 	right = Smashup.query.filter_by(char=oppo.lower(), oppo=char.lower()).first()
+	r_pros = right.suggs.filter_by(section='pro').all()
+	r_cons = right.suggs.filter_by(section='con').all()
+	r_neuts = right.suggs.filter_by(section='neutral').all()
 
-	return render_template('smashup.html', left=left, right=right)
+	return render_template('smashup.html', left=left, right=right, l_pros=l_pros, l_cons=l_cons, l_neuts=l_neuts, r_pros=r_pros, r_cons=r_cons, r_neuts=r_neuts)
 
 @lm.user_loader
 def load_user(id):
@@ -99,21 +124,12 @@ def suggestion(subject=None):
 			char = Character.query.filter_by(name=form.character.data.lower()).first()
 			oppo = Character.query.filter_by(name=form.opponent.data.lower()).first()
 			smashup = Smashup.query.filter_by(char=char.name, oppo=oppo.name).first()
-			if form.section.data == 'pro':
-				pro = Pro(form.text.data, smashup.id, g.user.nickname)
+			if form.section.data in ['pro', 'con', 'neutral']:
+				sugg = Suggestion(form.section.data, form.text.data, g.user.nickname)
+				sugg.smash_id = smashup.id
 				if g.user.is_special:
-					pro.is_special = True
-				db.session.add(pro)
-				db.session.commit()
-				return redirect(url_for('smashup', char=char.name, oppo=oppo.name))
-			elif form.section.data == 'con':
-				con = Con(form.text.data, smashup.id, g.user.id)
-				db.session.add(con)
-				db.session.commit()
-				return redirect(url_for('smashup', char=char.name, oppo=oppo.name))
-			elif form.section.data == 'neutral':
-				neut = Neutral(form.text.data, smashup.id, g.user.id)
-				db.session.add(neut)
+					sugg.is_special = True
+				db.session.add(sugg)
 				db.session.commit()
 				return redirect(url_for('smashup', char=char.name, oppo=oppo.name))
 			else:
@@ -124,14 +140,12 @@ def suggestion(subject=None):
 		form = CharSuggestionForm()
 		if form.validate_on_submit():
 			char = Character.query.filter_by(name=form.character.data.lower()).first()
-			if form.section.data == 'quick':
-				quick = Quick(form.text.data, char.id, g.user.id)
-				db.session.add(quick)
-				db.session.commit()
-				return redirect(url_for('character', name=char.name))
-			elif form.section.data == 'depth':
-				depth = Depth(form.text.data, char.id, g.user.id)
-				db.session.add(depth)
+			if form.section.data in ['quick', 'depth']:
+				sugg = Suggestion(form.section.data, form.text.data, g.user.nickname)
+				sugg.char_id = char.id
+				if g.user.is_special:
+					sugg.is_special = True
+				db.session.add(sugg)
 				db.session.commit()
 				return redirect(url_for('character', name=char.name))
 			else:

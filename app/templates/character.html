@@ -6,14 +6,14 @@
 	{% include "smashbar.html" %}
 	<div class="quick">
 		<h2>Quick Tips</h2>
-		{% for quick in character.quicks %}
-			<p>{{ quick.text }}</p>
+		{% for sugg in quicks %}
+			{% include "suggestion.html" %}
 		{% endfor %}
 	</div>
 	<div class="depth">
 		<h2>In-Depth</h2>
-		{% for depth in character.depths %}
-			<p>{{ depth.text }}</p>
+		{% for sugg in depths %}
+			{% include "suggestion.html" %}
 		{% endfor %}
 	</div>
 </div>
