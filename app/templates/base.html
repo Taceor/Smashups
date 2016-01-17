@@ -15,6 +15,7 @@
 	<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 	<script type=text/javascript>
 		$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+		var g_user_nickname = "{{ g.user.nickname }}";
 	</script>
 </head>
 <body>

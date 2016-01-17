@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 votes = db.Table('votes',
 	db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-	db.Column('suggestion_id', db.Integer, db.ForeignKey('suggestion.id'))
+	db.Column('suggestion_id', db.Integer, db.ForeignKey('suggestion.id')),
 )
 
 class Character(db.Model):
@@ -33,13 +33,13 @@ class Smashup(db.Model):
 		return '<Smashup %r vs %r>' % (self.char, self.oppo)
 
 class Suggestion(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
+	id = db.Column(db.Integer, primary_key=True, unique=True)
 	section = db.Column(db.String(42))
 	char_id = db.Column(db.Integer, db.ForeignKey('character.id'))
 	smash_id = db.Column(db.Integer, db.ForeignKey('smashup.id'))
 	text = db.Column(db.Text)
-	user_nickname = db.Column(db.Integer, db.ForeignKey('user.id'))
-	voters = db.relationship('User', secondary=votes, backref='suggestion', lazy='dynamic')
+	user_nickname = db.Column(db.Integer, db.ForeignKey('user.nickname'))
+	voters = db.relationship('User', secondary=votes, lazy='dynamic')
 	is_special = db.Column(db.Boolean)
 	score = db.Column(db.Integer)
 
@@ -64,15 +64,15 @@ class DevTip(db.Model):
 		return '<Suggestion %r: %r>' % (self.id,self.text[0:15])
 
 class User(db.Model):
-	id = db.Column(db.Integer, primary_key = True)
+	id = db.Column(db.Integer, primary_key = True, unique=True)
 	nickname = db.Column(db.String(42))
 	email = db.Column(db.String(255))
 	password = db.Column(db.String(255))
 	pw_hash = db.Column(db.String(255))
 	about = db.Column(db.Text())
 	main = db.Column(db.String(25))
-	suggestions = db.relationship('Suggestion', backref='user', lazy='dynamic')
-	votes = db.relationship('Suggestion', secondary=votes, backref='voter', lazy='dynamic') 
+	suggestions = db.relationship('Suggestion', backref='author', lazy='dynamic')
+	votes = db.relationship('Suggestion', secondary=votes, lazy='dynamic') 
 	is_special = db.Column(db.Boolean)
 	powerlevel = db.Column(db.Integer)
 	

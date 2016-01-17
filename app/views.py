@@ -14,18 +14,41 @@ chars = ["Bowser", "Captain Falcon", "Charizard", "Diddy Kong", "Donkey Kong", "
 def before_request():
 	g.user = current_user
 
-@app.route('/_upvote')
+@app.route('/_upvote', methods=['GET', 'POST'])
 def upvote():
-	user_nickname = request.args.get('user_nickname', 0)
+	user_nickname = request.form.get('user_nickname')
 	user = User.query.filter_by(nickname=user_nickname).first()
-	sugg_id = request.args.get('sugg_id', 0, type=int)
+	sugg_id = request.form.get('sugg_id')
 	sugg = Suggestion.query.filter_by(id=sugg_id).first()
-	sugg.score += 1
-	sugg.voters.append(user)
-	user.votes.append(sugg)
-	db.session.add(sugg)
-	db.session.add(user)
-	db.session.commit()
+	if sugg.voters.filter_by(nickname=user_nickname).first() is not None:
+		print("ERR", file=sys.stderr)
+		print("Sugg_id: %r" % (sugg_id), file=sys.stderr)
+		print("Sugg.id: %r" % (sugg.id), file=sys.stderr)
+		print("User: %r" % (user), file=sys.stderr)
+		print(sugg.voters.all(), file=sys.stderr)
+	else:
+		print("VOTED", file=sys.stderr)
+		sugg.score += 1
+		sugg.voters.append(user)
+		db.session.add(sugg)
+		db.session.commit()
+	return jsonify(result="test")
+
+@app.route('/_delete_suggestion', methods=['GET', 'POST'])
+def delete_suggestion():
+	user_nickname = request.form.get('user_nickname')
+	user = User.query.filter_by(nickname=user_nickname).first()
+	sugg_id = request.form.get('sugg_id')
+	sugg = Suggestion.query.filter_by(id=sugg_id).first()
+	if user.is_special:
+		for u in sugg.voters.all():
+			sugg.voters.remove(u)
+			db.session.commit()
+		db.session.delete(sugg)
+		db.session.commit()
+	else:
+		flash('You are not cool enough to do that!')
+		return redirect(url_for('index'))
 	return jsonify(result="test")
 
 
@@ -39,8 +62,8 @@ def character(name=None):
 	if name == 'Random' or name == 'random':
 		name = Character.query.filter_by(id=random.randint(1,41)).first().name
 	character = Character.query.filter_by(name=name.lower()).first()
-	quicks = character.suggs.filter_by(section='quick').join(Character.suggs).order_by(Suggestion.score).all()
-	depths = character.suggs.filter_by(section='depth').all()
+	quicks = character.suggs.filter_by(section='quick').join(Character.suggs).order_by(Suggestion.score.desc()).all()
+	depths = character.suggs.filter_by(section='depth').join(Character.suggs).order_by(Suggestion.score.desc()).all()
 	return render_template('character.html', character=character, quicks=quicks, depths=depths)
 
 @app.route('/smashup/<char>/<oppo>')
@@ -50,13 +73,13 @@ def smashup(char=None, oppo=None):
 	if oppo == 'Random' or oppo == 'random':
 		oppo = Character.query.filter_by(id=random.randint(1,41)).first().name
 	left = Smashup.query.filter_by(char=char.lower(), oppo=oppo.lower()).first()
-	l_pros = left.suggs.filter_by(section='pro').all()
-	l_cons = left.suggs.filter_by(section='con').all()
-	l_neuts = left.suggs.filter_by(section='neutral').all()
+	l_pros = left.suggs.filter_by(section='pro').join(Smashup.suggs).order_by(Suggestion.score.desc()).all()
+	l_cons = left.suggs.filter_by(section='con').join(Smashup.suggs).order_by(Suggestion.score.desc()).all()
+	l_neuts = left.suggs.filter_by(section='neutral').join(Smashup.suggs).order_by(Suggestion.score.desc()).all()
 	right = Smashup.query.filter_by(char=oppo.lower(), oppo=char.lower()).first()
-	r_pros = right.suggs.filter_by(section='pro').all()
-	r_cons = right.suggs.filter_by(section='con').all()
-	r_neuts = right.suggs.filter_by(section='neutral').all()
+	r_pros = right.suggs.filter_by(section='pro').join(Smashup.suggs).order_by(Suggestion.score.desc()).all()
+	r_cons = right.suggs.filter_by(section='con').join(Smashup.suggs).order_by(Suggestion.score.desc()).all()
+	r_neuts = right.suggs.filter_by(section='neutral').join(Smashup.suggs).order_by(Suggestion.score.desc()).all()
 
 	return render_template('smashup.html', left=left, right=right, l_pros=l_pros, l_cons=l_cons, l_neuts=l_neuts, r_pros=r_pros, r_cons=r_cons, r_neuts=r_neuts)
 
