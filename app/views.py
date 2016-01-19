@@ -144,36 +144,31 @@ def suggestion(subject=None):
 	if subject == 'smashup':
 		form = SmashSuggestionForm()
 		if form.validate_on_submit():
-			char = Character.query.filter_by(name=form.character.data.lower()).first()
-			oppo = Character.query.filter_by(name=form.opponent.data.lower()).first()
-			smashup = Smashup.query.filter_by(char=char.name, oppo=oppo.name).first()
-			if form.section.data in ['pro', 'con', 'neutral']:
-				sugg = Suggestion(form.section.data, form.text.data, g.user.nickname)
-				sugg.smash_id = smashup.id
-				if g.user.is_special:
-					sugg.is_special = True
-				db.session.add(sugg)
-				db.session.commit()
-				return redirect(url_for('smashup', char=char.name, oppo=oppo.name))
-			else:
-				flash('Invalid input detected, pleb!')
-				return redirect(url_for('index'))
-		return render_template('smashsuggestion.html', form=form, chars=chars)
+			for char in form.characters.data:
+				char = Character.query.filter_by(name=char.lower()).first()
+				for oppo in form.opponents.data:
+					oppo = Character.query.filter_by(name=oppo.lower()).first()
+					smashup = Smashup.query.filter_by(char=char.name, oppo=oppo.name).first()
+					sugg = Suggestion(form.section.data, form.text.data, g.user.nickname)
+					sugg.smash_id = smashup.id
+					if g.user.is_special:
+						sugg.is_special = True
+					db.session.add(sugg)
+					db.session.commit()
+			return redirect(url_for('smashup', char=char.name, oppo=oppo.name))
+		return render_template('smashsuggestion.html', form=form)
 	elif subject == 'character':
 		form = CharSuggestionForm()
 		if form.validate_on_submit():
-			char = Character.query.filter_by(name=form.character.data.lower()).first()
-			if form.section.data in ['quick', 'depth']:
+			for char in form.characters.data:
+				char = Character.query.filter_by(name=char.lower()).first()
 				sugg = Suggestion(form.section.data, form.text.data, g.user.nickname)
 				sugg.char_id = char.id
 				if g.user.is_special:
 					sugg.is_special = True
 				db.session.add(sugg)
 				db.session.commit()
-				return redirect(url_for('character', name=char.name))
-			else:
-				flash('Invalid input detected, pleb!')
-				return redirect(url_for('index'))
+			return redirect(url_for('character', name=char.name))
 		return render_template('charsuggestion.html', form=form, chars=chars)
 	elif subject == 'developer':
 		form = DevSuggestionForm()
