@@ -40,7 +40,7 @@ def delete_suggestion():
 	user = User.query.filter_by(nickname=user_nickname).first()
 	sugg_id = request.form.get('sugg_id')
 	sugg = Suggestion.query.filter_by(id=sugg_id).first()
-	if user.is_special:
+	if user.is_special or (user.nickname == sugg.user_nickname):
 		for u in sugg.voters.all():
 			sugg.voters.remove(u)
 			db.session.commit()
