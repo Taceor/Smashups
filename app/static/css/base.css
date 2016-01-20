@@ -2,3 +2,19 @@ form textarea#text {
 	width: 100%;
 	height: 10em;
 }
+
+.sugg {
+	border-radius: 8px;
+	background: #f4f4f4;
+	border: 3px solid gray;
+	padding: 5px;
+	margin: 5px;
+}
+
+.specialsugg {
+	border-radius: 8px;
+	background: #ddd0ff;
+	border: 3px solid #c3adff;
+	padding: 5px;
+	margin: 5px;
+}

@@ -8,7 +8,11 @@
 	<div class="quick">
 		<h2>Quick Tips</h2>
 		{% for sugg in quicks %}
-			{% include "suggestion.html" %}
+			{% if sugg.is_special %}
+				{% include "specialsuggestion.html" %}
+			{% else %}
+				{% include "suggestion.html" %}
+			{% endif %}
 		{% endfor %}
 	</div>
 	<div class="depth">

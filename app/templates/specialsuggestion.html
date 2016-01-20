@@ -1,0 +1,9 @@
+<div class="specialsugg">
+		<p>{{ sugg.text }} -> <span class="score">{{ sugg.score }}</span> 
+		<a href=# class="upvote">[^]</a>
+		{% if g.user.is_special or g.user.nickname == sugg.user_nickname %} 
+			<a href=# class="delete">[X]</a>
+		{% endif %} 
+		<span class="sugg_nickname:">{{ sugg.user_nickname }}</span>
+		<span class="sugg_id" style="display: none;">{{ sugg.id }}</span></p>
+</div>
