@@ -5,7 +5,7 @@
 		<h1><a href="{{ url_for('character', name=left.char) }}">{{ left.char.title() }}</a></h1>
 		{% include "smashbarleft.html" %}
 		<div class="pros">
-			<h2>Pros:</h2>
+			<h2>Pros: <a href="/suggestion/smashup/pro/{{left.char}}/{{right.char}}">[+]</a></h2>
 			<ul>
 			{% for sugg in l_pros %}
 				<li>{% include "suggestion.html" %}</li>
@@ -13,7 +13,7 @@
 			</ul>
 		</div>
 		<div class="cons">
-			<h2>Cons:</h2>
+			<h2>Cons: <a href="/suggestion/smashup/con/{{left.char}}/{{right.char}}">[+]</a></h2>
 			<ul>
 			{% for sugg in l_cons %}
 				{% include "suggestion.html" %}
@@ -21,7 +21,7 @@
 			</ul>
 		</div>
 		<div class="neut">
-			<h2>Neutral:</h2>
+			<h2>Neutral: <a href="/suggestion/smashup/neutral/{{left.char}}/{{right.char}}">[+]</a></h2>
 			<ul>
 			{% for sugg in l_neuts %}
 				{% include "suggestion.html" %}
@@ -33,7 +33,7 @@
 		<h1><a href="{{url_for('character', name=right.char) }}">{{ right.char.title() }}</a></h1>
 		{% include "smashbarright.html" %}
 		<div class="pros">
-			<h2>Pros:</h2>
+			<h2>Pros: <a href="/suggestion/smashup/pro/{{right.char}}/{{left.char}}">[+]</a></h2>
 			<ul>
 			{% for sugg in r_pros %}
 				{% include "suggestion.html" %}
@@ -41,7 +41,7 @@
 			</ul>
 		</div>
 		<div class="cons">
-			<h2>Cons:</h2>
+			<h2>Cons: <a href="/suggestion/smashup/con/{{right.char}}/{{left.char}}">[+]</a></h2>
 			<ul>
 			{% for sugg in r_cons %}
 				{% include "suggestion.html" %}
@@ -49,7 +49,7 @@
 			</ul>
 		</div>
 		<div class="neut">
-			<h2>Neutral:</h2>
+			<h2>Neutral: <a href="/suggestion/smashup/neutral/{{right.char}}/{{left.char}}">[+]</a></h2>
 			<ul>
 			{% for sugg in r_neuts %}
 				{% include "suggestion.html" %}

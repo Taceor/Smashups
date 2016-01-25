@@ -9,5 +9,7 @@ db = SQLAlchemy(app)
 lm = LoginManager()
 lm.init_app(app)
 lm.login_view = 'login'
+from .util import ListConverter
+app.url_map.converters['list'] = ListConverter
 
 from app import views, models

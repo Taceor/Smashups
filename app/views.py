@@ -138,11 +138,26 @@ def newuser():
 		return redirect(url_for('index'))
 	return render_template('newuser.html', form=form)
 
+@app.route('/test/<list:chars>/<list:oppos>')
+def test(chars, oppos):
+	string = ""
+	string2 = ""
+	for char in chars:
+		string += char + " "
+	for oppo in oppos:
+		string2 += oppo + " "
+	return string + string2
+
+
 @app.route('/suggestion/<subject>', methods=['GET', 'POST'])
+@app.route('/suggestion/<subject>/<section>/<list:characters>', methods=['GET', 'POST'])
+@app.route('/suggestion/<subject>/<section>/<list:characters>/<list:opponents>', methods=['GET', 'POST'])
 @login_required
-def suggestion(subject=None):
+def suggestion(subject=None, characters=None, opponents=None, section=None):
 	if subject == 'smashup':
-		form = SmashSuggestionForm()
+		form = SmashSuggestionForm(section=section)
+		form.characters.data = characters
+		form.opponents.data = opponents
 		if form.validate_on_submit():
 			for char in form.characters.data:
 				char = Character.query.filter_by(name=char.lower()).first()
@@ -158,7 +173,8 @@ def suggestion(subject=None):
 			return redirect(url_for('smashup', char=char.name, oppo=oppo.name))
 		return render_template('smashsuggestion.html', form=form)
 	elif subject == 'character':
-		form = CharSuggestionForm()
+		form = CharSuggestionForm(section=section)
+		form.characters.data = characters
 		if form.validate_on_submit():
 			for char in form.characters.data:
 				char = Character.query.filter_by(name=char.lower()).first()

@@ -6,7 +6,7 @@
 	<h1>{{ character.name.title() }}</h1>
 	{% include "smashbar.html" %}
 	<div class="quick">
-		<h2>Quick Tips</h2>
+		<h2>Quick Tips <a href="/suggestion/character/quick/{{character.name}}">[+]</a></h2>
 		{% for sugg in quicks %}
 			{% if sugg.is_special %}
 				{% include "specialsuggestion.html" %}
@@ -16,7 +16,7 @@
 		{% endfor %}
 	</div>
 	<div class="depth">
-		<h2>In-Depth</h2>
+		<h2>In-Depth <a href="/suggestion/character/depth/{{character.name}}">[+]</a></h2>
 		{% for sugg in depths %}
 			{% include "suggestion.html" %}
 		{% endfor %}
