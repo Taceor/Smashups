@@ -1,10 +1,10 @@
 from __future__ import print_function
 import sys
-import random
+import random, markdown
 from app import app, db, models, lm
 from app.models import Character, Smashup, User, Suggestion, DevTip
 from app.forms import LoginForm, NewUser, EditUser, SmashSuggestionForm, CharSuggestionForm, DevSuggestionForm
-from flask import render_template, flash, redirect, session, url_for, request, g, jsonify
+from flask import render_template, flash, redirect, session, url_for, request, g, jsonify, Markup
 from flask.ext.login import login_required, login_user, logout_user, current_user
 from config import SECRET_KEY
 
@@ -13,6 +13,12 @@ chars = ["Bowser", "Captain Falcon", "Charizard", "Diddy Kong", "Donkey Kong", "
 @app.before_request
 def before_request():
 	g.user = current_user
+
+@app.template_filter('markdown')
+def markdown_filter(data):
+    from flask import Markup
+    from markdown import markdown
+    return Markup(markdown(data))
 
 @app.route('/_upvote', methods=['GET', 'POST'])
 def upvote():

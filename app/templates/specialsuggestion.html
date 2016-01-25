@@ -1,5 +1,6 @@
 <div class="specialsugg">
-		<p>{{ sugg.text }} -> <span class="score">{{ sugg.score }}</span> 
+		<p>{{ sugg.text|markdown }} 
+		<span class="score">{{ sugg.score }}</span> 
 		<a href=# class="upvote">[^]</a>
 		{% if g.user.is_special or g.user.nickname == sugg.user_nickname %} 
 			<a href=# class="delete">[X]</a>
