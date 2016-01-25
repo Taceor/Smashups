@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="container">
+<div class="col-sm-12">
     <h1>Sign In</h1>
     <form action="" method="post" name="login">
         {{ form.hidden_tag() }}
@@ -14,4 +16,6 @@
         </p>
         <p><input type="submit" value="Sign In"></p>
     </form>
+</div>
+</div>
 {% endblock %}
