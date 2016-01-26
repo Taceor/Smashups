@@ -64,13 +64,21 @@ def index():
 	return render_template('index.html') 
 
 @app.route('/character/<name>')
-def character(name=None):
+@app.route('/character/<name>/<section>')
+def character(name=None, section=None):
 	if name == 'Random' or name == 'random':
 		name = Character.query.filter_by(id=random.randint(1,41)).first().name
 	character = Character.query.filter_by(name=name.lower()).first()
-	quicks = character.suggs.filter_by(section='quick').join(Character.suggs).order_by(Suggestion.score.desc()).all()
-	depths = character.suggs.filter_by(section='depth').join(Character.suggs).order_by(Suggestion.score.desc()).all()
-	return render_template('character.html', character=character, quicks=quicks, depths=depths)
+	if section == 'quicktips':
+		quicks = character.suggs.filter_by(section='quick').join(Character.suggs).order_by(Suggestion.score.desc()).all()
+		return render_template('quicktips.html', character=character, quicks=quicks)
+	elif section == 'indepth':
+		depths = character.suggs.filter_by(section='depth').join(Character.suggs).order_by(Suggestion.score.desc()).all()
+		return render_template('indepth.html', character=character, depths=depths)
+	else:
+		quicks = character.suggs.filter_by(section='quick').join(Character.suggs).order_by(Suggestion.score.desc()).limit(10).all()
+		depths = character.suggs.filter_by(section='depth').join(Character.suggs).order_by(Suggestion.score.desc()).limit(10).all()
+		return render_template('character.html', character=character, quicks=quicks, depths=depths)
 
 @app.route('/smashup/<char>/<oppo>')
 def smashup(char=None, oppo=None):
@@ -79,13 +87,13 @@ def smashup(char=None, oppo=None):
 	if oppo == 'Random' or oppo == 'random':
 		oppo = Character.query.filter_by(id=random.randint(1,41)).first().name
 	left = Smashup.query.filter_by(char=char.lower(), oppo=oppo.lower()).first()
-	l_pros = left.suggs.filter_by(section='pro').join(Smashup.suggs).order_by(Suggestion.score.desc()).all()
-	l_cons = left.suggs.filter_by(section='con').join(Smashup.suggs).order_by(Suggestion.score.desc()).all()
-	l_neuts = left.suggs.filter_by(section='neutral').join(Smashup.suggs).order_by(Suggestion.score.desc()).all()
+	l_pros = left.suggs.filter_by(section='pro').join(Smashup.suggs).order_by(Suggestion.score.desc()).limit(5).all()
+	l_cons = left.suggs.filter_by(section='con').join(Smashup.suggs).order_by(Suggestion.score.desc()).limit(5).all()
+	l_neuts = left.suggs.filter_by(section='neutral').join(Smashup.suggs).order_by(Suggestion.score.desc()).limit(5).all()
 	right = Smashup.query.filter_by(char=oppo.lower(), oppo=char.lower()).first()
-	r_pros = right.suggs.filter_by(section='pro').join(Smashup.suggs).order_by(Suggestion.score.desc()).all()
-	r_cons = right.suggs.filter_by(section='con').join(Smashup.suggs).order_by(Suggestion.score.desc()).all()
-	r_neuts = right.suggs.filter_by(section='neutral').join(Smashup.suggs).order_by(Suggestion.score.desc()).all()
+	r_pros = right.suggs.filter_by(section='pro').join(Smashup.suggs).order_by(Suggestion.score.desc()).limit(5).all()
+	r_cons = right.suggs.filter_by(section='con').join(Smashup.suggs).order_by(Suggestion.score.desc()).limit(5).all()
+	r_neuts = right.suggs.filter_by(section='neutral').join(Smashup.suggs).order_by(Suggestion.score.desc()).limit(5).all()
 
 	return render_template('smashup.html', left=left, right=right, l_pros=l_pros, l_cons=l_cons, l_neuts=l_neuts, r_pros=r_pros, r_cons=r_cons, r_neuts=r_neuts)
 
