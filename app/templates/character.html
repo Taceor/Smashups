@@ -18,7 +18,11 @@
 	<div class="depth">
 		<h2>In-Depth <a href="/suggestion/character/depth/{{character.name}}">[+]</a></h2>
 		{% for sugg in depths %}
-			{% include "suggestion.html" %}
+			{% if sugg.is_special %}
+				{% include "specialsuggestion.html" %}
+			{% else %}
+				{% include "suggestion.html" %}
+			{% endif %}
 		{% endfor %}
 	</div>
 </div>
