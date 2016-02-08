@@ -2,13 +2,18 @@ from __future__ import print_function
 import sys
 import random, markdown
 from app import app, db, models, lm
-from app.models import Character, Smashup, User, Suggestion, DevTip
+from app.models import Character, Smashup, User, Suggestion, DevTip, Move
 from app.forms import LoginForm, NewUser, EditUser, SmashSuggestionForm, CharSuggestionForm, DevSuggestionForm
 from flask import render_template, flash, redirect, session, url_for, request, g, jsonify, Markup
 from flask.ext.login import login_required, login_user, logout_user, current_user
 from config import SECRET_KEY
 
 chars = ["Bowser", "Captain Falcon", "Charizard", "Diddy Kong", "Donkey Kong", "Falco", "Fox", "Mr. Game & Watch", "Ganondorf", "Ice Climbers", "Ike", "Ivysaur", "Jigglypuff", "King Dedede", "Kirby", "Link", "Lucario", "Lucas", "Luigi", "Mario", "Marth", "Meta Knight", "Mewtwo", "Ness", "Olimar", "Peach", "Pikachu", "Pit", "R.O.B.", "Roy", "Samus", "Sheik", "Snake", "Sonic", "Squirtle", "Toon Link", "Wario", "Wolf", "Yoshi", "Zelda", "Zero Suit Samus"]
+
+@app.route('/test')
+def test():
+	moves = Move.query.all()
+	return render_template('movelist.html', moves=moves)
 
 @app.before_request
 def before_request():
@@ -69,16 +74,17 @@ def character(name=None, section=None):
 	if name == 'Random' or name == 'random':
 		name = Character.query.filter_by(id=random.randint(1,41)).first().name
 	character = Character.query.filter_by(name=name.lower()).first()
+	moves = character.moves
 	if section == 'quicktips':
 		quicks = character.suggs.filter_by(section='quick').join(Character.suggs).order_by(Suggestion.score.desc()).all()
-		return render_template('quicktips.html', character=character, quicks=quicks)
+		return render_template('quicktips.html', character=character, quicks=quicks, moves=moves)
 	elif section == 'indepth':
 		depths = character.suggs.filter_by(section='depth').join(Character.suggs).order_by(Suggestion.score.desc()).all()
-		return render_template('indepth.html', character=character, depths=depths)
+		return render_template('indepth.html', character=character, depths=depths, moves=moves)
 	else:
 		quicks = character.suggs.filter_by(section='quick').join(Character.suggs).order_by(Suggestion.score.desc()).limit(10).all()
 		depths = character.suggs.filter_by(section='depth').join(Character.suggs).order_by(Suggestion.score.desc()).limit(10).all()
-		return render_template('character.html', character=character, quicks=quicks, depths=depths)
+		return render_template('character.html', character=character, quicks=quicks, depths=depths, moves=moves)
 
 @app.route('/smashup/<char>/<oppo>')
 def smashup(char=None, oppo=None):
@@ -90,12 +96,14 @@ def smashup(char=None, oppo=None):
 	l_pros = left.suggs.filter_by(section='pro').join(Smashup.suggs).order_by(Suggestion.score.desc()).limit(5).all()
 	l_cons = left.suggs.filter_by(section='con').join(Smashup.suggs).order_by(Suggestion.score.desc()).limit(5).all()
 	l_neuts = left.suggs.filter_by(section='neutral').join(Smashup.suggs).order_by(Suggestion.score.desc()).limit(5).all()
+	l_moves = Character.query.filter_by(name=char.lower()).first().moves
 	right = Smashup.query.filter_by(char=oppo.lower(), oppo=char.lower()).first()
 	r_pros = right.suggs.filter_by(section='pro').join(Smashup.suggs).order_by(Suggestion.score.desc()).limit(5).all()
 	r_cons = right.suggs.filter_by(section='con').join(Smashup.suggs).order_by(Suggestion.score.desc()).limit(5).all()
 	r_neuts = right.suggs.filter_by(section='neutral').join(Smashup.suggs).order_by(Suggestion.score.desc()).limit(5).all()
+	r_moves = Character.query.filter_by(name=oppo.lower()).first().moves
 
-	return render_template('smashup.html', left=left, right=right, l_pros=l_pros, l_cons=l_cons, l_neuts=l_neuts, r_pros=r_pros, r_cons=r_cons, r_neuts=r_neuts)
+	return render_template('smashup.html', left=left, right=right, l_pros=l_pros, l_cons=l_cons, l_neuts=l_neuts, l_moves=l_moves, r_pros=r_pros, r_cons=r_cons, r_neuts=r_neuts, r_moves=r_moves)
 
 @lm.user_loader
 def load_user(id):
@@ -151,17 +159,6 @@ def newuser():
 		flash('Logged in')
 		return redirect(url_for('index'))
 	return render_template('newuser.html', form=form)
-
-@app.route('/test/<list:chars>/<list:oppos>')
-def test(chars, oppos):
-	string = ""
-	string2 = ""
-	for char in chars:
-		string += char + " "
-	for oppo in oppos:
-		string2 += oppo + " "
-	return string + string2
-
 
 @app.route('/suggestion/<subject>', methods=['GET', 'POST'])
 @app.route('/suggestion/<subject>/<section>/<list:characters>', methods=['GET', 'POST'])

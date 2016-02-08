@@ -34,6 +34,12 @@
 				{% endif %}
 			{% endfor %}
 		</div>
+		<div class="moves">
+			<h2>Movelist: </h2>
+			<div class="table-responsive">
+				{% include "movelistleft.html" %}
+			</div>
+		</div>
 	</div>
 	<div class="col-sm-6">
 		<h1><a href="{{url_for('character', name=right.char) }}">{{ right.char.title() }}</a></h1>
@@ -67,6 +73,12 @@
 					{% include "suggestion.html" %}
 				{% endif %}
 			{% endfor %}
+		</div>
+		<div class="moves">
+			<h2>Movelist: </h2>
+			<div class="table-responsive">
+				{% include "movelistright.html" %}
+			</div>
 		</div>
 	</div>
 {% endblock %}

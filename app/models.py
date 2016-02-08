@@ -11,6 +11,7 @@ class Character(db.Model):
 	name = db.Column(db.String(25), unique=True)
 	safename = db.Column(db.String(25), unique=True)
 	suggs = db.relationship('Suggestion', backref='character', lazy='dynamic')
+	moves = db.relationship('Move', backref='character', lazy='dynamic')
 
 	def __init__(self, name, safename):
 		self.name = name
@@ -18,6 +19,44 @@ class Character(db.Model):
 
 	def __repr__(self):
 		return '<Character %r>' % (self.name.encode('utf8'))
+
+class Move(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	char_id = db.Column(db.Integer, db.ForeignKey('character.id'))
+	name = db.Column(db.String(255))
+	damage = db.Column(db.String(255))
+	hitstun = db.Column(db.String(255))
+	blockstun = db.Column(db.String(255))
+	knockback = db.Column(db.String(255))
+	angle = db.Column(db.String(255))
+	startup = db.Column(db.String(255))
+	active = db.Column(db.String(255))
+	recovery = db.Column(db.String(255))
+	landing = db.Column(db.String(255))
+	auto = db.Column(db.String(255))
+	iasa = db.Column(db.String(255))
+	onblock = db.Column(db.String(255))
+	onhit = db.Column(db.String(255))
+	notes = db.Column(db.String(2555))
+	gifname = db.Column(db.String(255))
+
+	def __init__(self, char_id, name, damage, hitstun, blockstun, knockback, angle, startup, active, recovery, iasa, onblock):
+		self.char_id = char_id
+		self.name = name
+		self.damage = damage
+		self.hitstun = hitstun
+		self.blockstun = blockstun
+		self.knockback = knockback
+		self.angle = angle
+		self.startup = startup
+		self.active = active
+		self.recovery = recovery
+		self.iasa = iasa
+		self.onblock = onblock
+
+	def __repr__(self):
+		return '<Move %r:%r>' % (self.char_id, self.name)
+
 
 class Smashup(db.Model):
 	id = db.Column(db.Integer, primary_key=True)

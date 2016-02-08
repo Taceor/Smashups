@@ -1,0 +1,38 @@
+<table border="1">
+	<tr>
+		<th>Name</th>
+		<th>Damage</th>
+		<th>Hit Stun</th>
+		<th>Block Stun</th>
+		<th>Knockback</th>
+		<th>Angle</th>
+		<th>Startup</th>
+		<th>Active</th>
+		<th>Recovery</th>
+		<th>IASA</th>
+		<th>On Block</th>
+		<th>On Hit</th>
+		<th>Landing Lag</th>
+		<th>Auto-Cancel</th>
+		<th>Notes</th>
+	</tr>
+	{% for move in r_moves %}
+	<tr>
+		<td>{{ move.name }}</td>
+		<td>{{ move.damage }}</td>
+		<td>{{ move.hitstun }}</td>
+		<td>{{ move.blockstun }}</td>
+		<td>{{ move.knockback }}</td>
+		<td>{{ move.angle }}</td>
+		<td>{{ move.startup }}</td>
+		<td>{{ move.active }}</td>
+		<td>{{ move.recovery }}</td>
+		<td>{{ move.iasa }}</td>
+		<td>{{ move.onblock }}</td>
+		<td>{{ move.onhit }}</td>
+		<td>{{ move.landing }}</td>
+		<td>{{ move.auto }}</td>
+		<td>{{ move.notes }}</td>
+	</tr>
+	{% endfor %}
+</table>
