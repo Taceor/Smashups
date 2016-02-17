@@ -12,8 +12,19 @@ chars = ["Bowser", "Captain Falcon", "Charizard", "Diddy Kong", "Donkey Kong", "
 
 @app.route('/test')
 def test():
-	moves = Move.query.all()
-	return render_template('movelist.html', moves=moves)
+	w = Character.query.filter_by(name="wolf").first()
+	y = Character.query.filter_by(name="yoshi").first()
+	l_moves = w.moves
+	r_moves = y.moves
+	wnotes = []
+	for move in w.moves:
+		ymove = Move.query.filter_by(char_id=y.id, name=move.name).first()
+		if ymove is None:
+			pass
+		elif ymove.startup < move.startup:
+			note = "Yoshi's %s is faster than yours by %d frames! You: %d Yoshi: %d" % (ymove.name, int(move.startup) - int(ymove.startup), int(move.startup), int(ymove.startup))
+			wnotes.append(note)
+	return render_template('test.html', w=w, y=y, l_moves=l_moves, r_moves=r_moves, wnotes=wnotes)
 
 @app.before_request
 def before_request():
