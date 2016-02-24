@@ -46,6 +46,7 @@
             <li><a href="{{ url_for('suggestion', subject='developer') }}">Developer Tip</a></li>
           </ul>
         </li>
+		<li><a href="{{ url_for('about') }}">About</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
 		{% if g.user.is_authenticated %}

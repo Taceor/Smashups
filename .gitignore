@@ -3,3 +3,4 @@ flask/
 app.db
 db_repository/
 app/templates/smashuplist-rec.html
+*.old
