@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<script src="{{ url_for('static', filename='js/base.js') }}"></script>
+<div class="container">
+<div class="col-sm-12">
+    {% if suggestion %}
+        {% include "suggestion.html" %}
+    {% else %}
+        No such suggestion, homie.
+    {% endif %}
+    {% if comments %}
+        {% include "comments.html" %}
+    {% endif %}
+</div>
+</div>
+{% endblock %}

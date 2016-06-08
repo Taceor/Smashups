@@ -19,4 +19,8 @@ $(document).ready( function() {
 			sugg_id: sugg_id
 		});
 	});
+    $('div.sugg').click(function() {
+        var suggid = $(this).find(".sugg_id").html();
+        $(location).attr('href', '/suggestion/' + suggid);
+    });
 });

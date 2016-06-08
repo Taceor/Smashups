@@ -1,0 +1,10 @@
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
+{% for comment in comments recursive %}
+    <div class="comment">
+    {{ comment.text }}
+    {% if comment.children %}
+        {{ loop(comment.children) }}
+    {% endif %}
+    </div>
+{% endfor %}
+{% include "commentform.html" %}

@@ -1,12 +1,13 @@
 from __future__ import print_function
-import sys
-import random, markdown
 from app import app, db, models, lm
-from app.models import Character, Smashup, User, Suggestion, DevTip, Move
-from app.forms import LoginForm, NewUser, EditUser, SmashSuggestionForm, CharSuggestionForm, DevSuggestionForm
+from app.models import Character, Smashup, User, Suggestion, DevTip, Move, Comment
+from app.forms import LoginForm, NewUser, EditUser, SmashSuggestionForm, CharSuggestionForm, DevSuggestionForm, CommentForm
 from flask import render_template, flash, redirect, session, url_for, request, g, jsonify, Markup
+from flask.views import MethodView
 from flask.ext.login import login_required, login_user, logout_user, current_user
 from config import SECRET_KEY
+
+import random
 
 chars = ["Bowser", "Captain Falcon", "Charizard", "Diddy Kong", "Donkey Kong", "Falco", "Fox", "Mr. Game & Watch", "Ganondorf", "Ice Climbers", "Ike", "Ivysaur", "Jigglypuff", "King Dedede", "Kirby", "Link", "Lucario", "Lucas", "Luigi", "Mario", "Marth", "Meta Knight", "Mewtwo", "Ness", "Olimar", "Peach", "Pikachu", "Pit", "R.O.B.", "Roy", "Samus", "Sheik", "Snake", "Sonic", "Squirtle", "Toon Link", "Wario", "Wolf", "Yoshi", "Zelda", "Zero Suit Samus"]
 
@@ -25,6 +26,16 @@ def test():
 			note = "Yoshi's %s is faster than yours by %d frames! You: %d Yoshi: %d" % (ymove.name, int(move.startup) - int(ymove.startup), int(move.startup), int(ymove.startup))
 			wnotes.append(note)
 	return render_template('test.html', w=w, y=y, l_moves=l_moves, r_moves=r_moves, wnotes=wnotes)
+
+@app.route('/comments', methods=['GET', 'POST'])
+def comments():
+    comments = Comment.query.all()
+    form = CommentForm()
+    if form.validate_on_submit():
+        comment = Comment(text=form.text.data)
+        db.session.add(comment)
+        db.session.commit()
+    return render_template('comments.html', comments=comments, form=form)
 
 @app.before_request
 def before_request():
@@ -175,11 +186,18 @@ def newuser():
 		return redirect(url_for('index'))
 	return render_template('newuser.html', form=form)
 
-@app.route('/suggestion/<subject>', methods=['GET', 'POST'])
-@app.route('/suggestion/<subject>/<section>/<list:characters>', methods=['GET', 'POST'])
-@app.route('/suggestion/<subject>/<section>/<list:characters>/<list:opponents>', methods=['GET', 'POST'])
+@app.route('/suggestion/<id>')
+def suggestion(id=None):
+    form = CommentForm()
+    comments = Comment.query.all()#filter_by(suggestion_id=id).all()
+    suggestion = Suggestion.query.get(id)
+    return render_template('suggestion_page.html', comments=comments, suggestion=suggestion, form=form)
+
+@app.route('/newsuggestion/<subject>', methods=['GET', 'POST'])
+@app.route('/newsuggestion/<subject>/<section>/<list:characters>', methods=['GET', 'POST'])
+@app.route('/newsuggestion/<subject>/<section>/<list:characters>/<list:opponents>', methods=['GET', 'POST'])
 @login_required
-def suggestion(subject=None, characters=None, opponents=None, section=None):
+def newsuggestion(subject=None, characters=None, opponents=None, section=None):
 	if subject == 'smashup':
 		form = SmashSuggestionForm(section=section)
 		form.characters.data = characters

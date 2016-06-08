@@ -16,7 +16,7 @@ class NewUser(Form):
 	confirm = PasswordField('Repeat Password')
 
 class EditUser(Form):
-	about = TextField('About You', [validators.DataRequired()])
+	about = TextAreaField('About You', [validators.DataRequired()])
 	main = SelectField('Select Main', choices=[('yoshi', 'Yoshi'), ('not', 'Not')])
 
 class CharSuggestionForm(Form):
@@ -31,4 +31,7 @@ class SmashSuggestionForm(Form):
 	text = TextAreaField(u'Suggestion')
 
 class DevSuggestionForm(Form):
-	text = TextField('Suggestion')
+	text = TextAreaField('Suggestion')
+
+class CommentForm(Form):
+    text = TextAreaField('Comment')

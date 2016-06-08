@@ -1,10 +1,11 @@
-<div class="sugg">
-		<p>{{ sugg.text|markdown }} 
-		<span class="score">{{ sugg.score }}</span> 
+<div class="sugg"> 
+		<p>{{ suggestion.text|markdown }}</p> 
+		<span class="score">{{ suggestion.score }}</span> 
+		<span class="sugg_nickname:">{{ suggestion.user_nickname }}</span>
 		<a href=# class="upvote">[^]</a>
-		{% if g.user.is_special or g.user.nickname == sugg.user_nickname %} 
+		{% if g.user.is_special or g.user.nickname == suggestion.user_nickname %} 
 			<a href=# class="delete">[X]</a>
 		{% endif %} 
-		<span class="sugg_nickname:">{{ sugg.user_nickname }}</span>
-		<span class="sugg_id" style="display: none;">{{ sugg.id }}</span></p>
+        <a href="{{ url_for('suggestion', id=suggestion.id) }}" style="text-align:right">comments</a>
+		<span class="sugg_id" style="display: none;">{{ suggestion.id }}</span>
 </div>

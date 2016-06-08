@@ -7,9 +7,9 @@
 	{% include "smashbar.html" %}
 	<div class="quick">
 		<h2><a href="{{ url_for('character', name=character.name, section='quicktips') }}">Quick Tips</a> 
-		<a href="/suggestion/character/quick/{{character.name}}">[+]</a></h2>
-		{% for sugg in quicks %}
-			{% if sugg.is_special %}
+		<a href="/newsuggestion/character/quick/{{character.name}}">[+]</a></h2>
+		{% for suggestion in quicks %}
+			{% if suggestion.is_special %}
 				{% include "specialsuggestion.html" %}
 			{% else %}
 				{% include "suggestion.html" %}
@@ -18,9 +18,9 @@
 	</div>
 	<div class="depth">
 		<h2><a href="{{ url_for('character', name=character.name, section='indepth') }}">In-Depth</a> 
-		<a href="/suggestion/character/depth/{{character.name}}">[+]</a></h2>
-		{% for sugg in depths %}
-			{% if sugg.is_special %}
+		<a href="/newsuggestion/character/depth/{{character.name}}">[+]</a></h2>
+		{% for suggestion in depths %}
+			{% if suggestion.is_special %}
 				{% include "specialsuggestion.html" %}
 			{% else %}
 				{% include "suggestion.html" %}
