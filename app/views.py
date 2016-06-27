@@ -9,6 +9,7 @@ from config import SECRET_KEY
 
 import random
 import json
+import sys
 
 chars = ["Bowser", "Captain Falcon", "Charizard", "Diddy Kong", "Donkey Kong", "Falco", "Fox", "Mr. Game & Watch", "Ganondorf", "Ice Climbers", "Ike", "Ivysaur", "Jigglypuff", "King Dedede", "Kirby", "Link", "Lucario", "Lucas", "Luigi", "Mario", "Marth", "Meta Knight", "Mewtwo", "Ness", "Olimar", "Peach", "Pikachu", "Pit", "R.O.B.", "Roy", "Samus", "Sheik", "Snake", "Sonic", "Squirtle", "Toon Link", "Wario", "Wolf", "Yoshi", "Zelda", "Zero Suit Samus"]
 
@@ -56,13 +57,7 @@ def upvote():
 	sugg_id = request.form.get('sugg_id')
 	sugg = Suggestion.query.filter_by(id=sugg_id).first()
 	if sugg.voters.filter_by(nickname=user_nickname).first() is not None:
-		print("ERR", file=sys.stderr)
-		print("Sugg_id: %r" % (sugg_id), file=sys.stderr)
-		print("Sugg.id: %r" % (sugg.id), file=sys.stderr)
-		print("User: %r" % (user), file=sys.stderr)
-		print(sugg.voters.all(), file=sys.stderr)
 	else:
-		print("VOTED", file=sys.stderr)
 		sugg.score += 1
 		sugg.voters.append(user)
 		db.session.add(sugg)
