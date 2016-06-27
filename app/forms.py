@@ -34,4 +34,4 @@ class DevSuggestionForm(Form):
 	text = TextAreaField('Suggestion')
 
 class CommentForm(Form):
-    text = TextAreaField('Comment')
+    comment_text = TextAreaField('Comment')

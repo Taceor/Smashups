@@ -8,6 +8,7 @@ from flask.ext.login import login_required, login_user, logout_user, current_use
 from config import SECRET_KEY
 
 import random
+import json
 
 chars = ["Bowser", "Captain Falcon", "Charizard", "Diddy Kong", "Donkey Kong", "Falco", "Fox", "Mr. Game & Watch", "Ganondorf", "Ice Climbers", "Ike", "Ivysaur", "Jigglypuff", "King Dedede", "Kirby", "Link", "Lucario", "Lucas", "Luigi", "Mario", "Marth", "Meta Knight", "Mewtwo", "Ness", "Olimar", "Peach", "Pikachu", "Pit", "R.O.B.", "Roy", "Samus", "Sheik", "Snake", "Sonic", "Squirtle", "Toon Link", "Wario", "Wolf", "Yoshi", "Zelda", "Zero Suit Samus"]
 
@@ -27,16 +28,6 @@ def test():
 			wnotes.append(note)
 	return render_template('test.html', w=w, y=y, l_moves=l_moves, r_moves=r_moves, wnotes=wnotes)
 
-@app.route('/comments', methods=['GET', 'POST'])
-def comments():
-    comments = Comment.query.all()
-    form = CommentForm()
-    if form.validate_on_submit():
-        comment = Comment(text=form.text.data)
-        db.session.add(comment)
-        db.session.commit()
-    return render_template('comments.html', comments=comments, form=form)
-
 @app.before_request
 def before_request():
 	g.user = current_user
@@ -46,6 +37,17 @@ def markdown_filter(data):
     from flask import Markup
     from markdown import markdown
     return Markup(markdown(data))
+
+@app.route('/reply', methods=['GET', 'POST'])
+def reply():
+    text = request.json['text']
+    suggestion_id = request.json['suggestion_id']
+    parent_id = request.json['parent_id']
+    user_nickname = request.json['user_nickname']
+    comment = Comment(text=text, parent_id=parent_id, user_nickname=user_nickname)
+    db.session.add(comment)
+    db.session.commit()
+    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
 @app.route('/_upvote', methods=['GET', 'POST'])
 def upvote():
@@ -186,11 +188,18 @@ def newuser():
 		return redirect(url_for('index'))
 	return render_template('newuser.html', form=form)
 
-@app.route('/suggestion/<id>')
+@app.route('/suggestion/<id>', methods=['GET', 'POST'])
 def suggestion(id=None):
     form = CommentForm()
-    comments = Comment.query.all()#filter_by(suggestion_id=id).all()
+    comments = Comment.query.filter_by(suggestion_id=id).all()
     suggestion = Suggestion.query.get(id)
+    if form.validate_on_submit():
+        comment = Comment(text=form.comment_text.data, user_nickname=g.user.nickname, suggestion_id=id)
+        if g.user.is_special:
+            comment.is_special = True
+        db.session.add(comment)
+        db.session.commit()
+        return redirect(url_for('suggestion', id=id)) 
     return render_template('suggestion_page.html', comments=comments, suggestion=suggestion, form=form)
 
 @app.route('/newsuggestion/<subject>', methods=['GET', 'POST'])

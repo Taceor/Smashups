@@ -10,9 +10,4 @@
 			return false;
 		});
 	});
-    $(function() {
-        $('div#sugg').bind('click', function() {
-            $window.location = "/suggestion/{{ sugg.id }}";
-        });
-    });
 </script>

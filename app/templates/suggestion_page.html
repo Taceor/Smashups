@@ -5,11 +5,12 @@
 <div class="col-sm-12">
     {% if suggestion %}
         {% include "suggestion.html" %}
+        {% include "commentform.html" %}
+        {% if comments %}
+            {% include "comments.html" %}
+        {% endif %}
     {% else %}
         No such suggestion, homie.
-    {% endif %}
-    {% if comments %}
-        {% include "comments.html" %}
     {% endif %}
 </div>
 </div>

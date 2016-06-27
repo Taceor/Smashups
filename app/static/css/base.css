@@ -13,20 +13,11 @@ table {
 	margin-right: auto;
 }
 
-.table-responsive {
-	/*
-	width: 100%;
-	height: 100%;
-	max-width: 830px;
-	*/
-}
-
 .sugg {
 	border-radius: 8px;
 	background: #f4f4f4;
 	border: 3px solid gray;
 	padding: 5px;
-	margin: 5px;
 }
 
 .specialsugg {
@@ -34,7 +25,6 @@ table {
 	background: #ddd0ff;
 	border: 3px solid #c3adff;
 	padding: 5px;
-	margin: 5px;
 }
 .flex-container {
     display: -webkit-flex;
@@ -49,4 +39,11 @@ table {
     width: 100px;
     height: 100px;
     margin: 10px;
+}
+
+.comment {
+	border-radius: 10px;
+	background: #f4f4f4;
+	border: 1px solid gray;
+	padding: 5px;
 }
