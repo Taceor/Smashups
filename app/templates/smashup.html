@@ -5,9 +5,9 @@
 		<h1><a href="{{ url_for('character', name=left.char) }}">{{ left.char.title() }}</a></h1>
 		{% include "smashbarleft.html" %}
 		<div class="pros">
-			<h2>Pros: <a href="/suggestion/smashup/pro/{{left.char}}/{{right.char}}">[+]</a></h2>
-			{% for sugg in l_pros %}
-				{% if sugg.is_special %}
+			<h2>Pros: <a href="/newsuggestion/smashup/pro/{{left.char}}/{{right.char}}">[+]</a></h2>
+			{% for suggestion in l_pros %}
+				{% if suggestion.is_special %}
 					{% include "specialsuggestion.html" %}
 				{% else %}
 					{% include "suggestion.html" %}
@@ -15,9 +15,9 @@
 			{% endfor %}
 		</div>
 		<div class="cons">
-			<h2>Cons: <a href="/suggestion/smashup/con/{{left.char}}/{{right.char}}">[+]</a></h2>
-			{% for sugg in l_cons %}
-				{% if sugg.is_special %}
+			<h2>Cons: <a href="/newsuggestion/smashup/con/{{left.char}}/{{right.char}}">[+]</a></h2>
+			{% for suggestion in l_cons %}
+				{% if suggestion.is_special %}
 					{% include "specialsuggestion.html" %}
 				{% else %}
 					{% include "suggestion.html" %}
@@ -25,9 +25,9 @@
 			{% endfor %}
 		</div>
 		<div class="neut">
-			<h2>Neutral: <a href="/suggestion/smashup/neutral/{{left.char}}/{{right.char}}">[+]</a></h2>
-			{% for sugg in l_neuts %}
-				{% if sugg.is_special %}
+			<h2>Neutral: <a href="/newsuggestion/smashup/neutral/{{left.char}}/{{right.char}}">[+]</a></h2>
+			{% for suggestion in l_neuts %}
+				{% if suggestion.is_special %}
 					{% include "specialsuggestion.html" %}
 				{% else %}
 					{% include "suggestion.html" %}
@@ -45,9 +45,9 @@
 		<h1><a href="{{url_for('character', name=right.char) }}">{{ right.char.title() }}</a></h1>
 		{% include "smashbarright.html" %}
 		<div class="pros">
-			<h2>Pros: <a href="/suggestion/smashup/pro/{{right.char}}/{{left.char}}">[+]</a></h2>
-			{% for sugg in r_pros %}
-				{% if sugg.is_special %}
+			<h2>Pros: <a href="/newsuggestion/smashup/pro/{{right.char}}/{{left.char}}">[+]</a></h2>
+			{% for suggestion in r_pros %}
+				{% if suggestion.is_special %}
 					{% include "specialsuggestion.html" %}
 				{% else %}
 					{% include "suggestion.html" %}
@@ -55,9 +55,9 @@
 			{% endfor %}
 		</div>
 		<div class="cons">
-			<h2>Cons: <a href="/suggestion/smashup/con/{{right.char}}/{{left.char}}">[+]</a></h2>
-			{% for sugg in r_cons %}
-				{% if sugg.is_special %}
+			<h2>Cons: <a href="/newsuggestion/smashup/con/{{right.char}}/{{left.char}}">[+]</a></h2>
+			{% for suggestion in r_cons %}
+				{% if suggestion.is_special %}
 					{% include "specialsuggestion.html" %}
 				{% else %}
 					{% include "suggestion.html" %}
@@ -65,9 +65,9 @@
 			{% endfor %}
 		</div>
 		<div class="neut">
-			<h2>Neutral: <a href="/suggestion/smashup/neutral/{{right.char}}/{{left.char}}">[+]</a></h2>
-			{% for sugg in r_neuts %}
-				{% if sugg.is_special %}
+			<h2>Neutral: <a href="/newsuggestion/smashup/neutral/{{right.char}}/{{left.char}}">[+]</a></h2>
+			{% for suggestion in r_neuts %}
+				{% if suggestion.is_special %}
 					{% include "specialsuggestion.html" %}
 				{% else %}
 					{% include "suggestion.html" %}
